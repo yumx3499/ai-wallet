@@ -1,5 +1,5 @@
-// API proxy base URL - change this for production
-const PROXY_BASE = 'http://localhost:3001';
+// API proxy base URL - use current origin in production
+const PROXY_BASE = window.location.hostname === 'localhost' ? 'http://localhost:3001' : '';
 
 // DOM Elements
 const apiKeyInput = document.getElementById('api-key');
