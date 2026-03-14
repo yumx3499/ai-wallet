@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Wallet - 消费管理面板</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <h1>AI Wallet</h1>
+      <p class="subtitle">AI 消费管理面板</p>
+    </header>
+
+    <!-- API Key Section -->
+    <section class="api-section">
+      <div class="api-input-group">
+        <label for="api-key">OpenRouter API Key</label>
+        <div class="input-row">
+          <input type="password" id="api-key" placeholder="输入你的 Management API Key...">
+          <button id="connect-btn" class="btn btn-primary">连接</button>
+          <button id="disconnect-btn" class="btn btn-danger" style="display:none;">断开</button>
+        </div>
+        <p class="hint">Key 仅保存在浏览器本地，不会上传至任何服务器</p>
+      </div>
+    </section>
+
+    <!-- Main Dashboard -->
+    <main id="dashboard" class="dashboard" style="display:none;">
+      <!-- Overview Cards -->
+      <section class="overview-cards">
+        <div class="card card-total">
+          <div class="card-icon">&#128176;</div>
+          <div class="card-content">
+            <h3>总消费</h3>
+            <p class="card-value" id="total-spent">$0.00</p>
+          </div>
+        </div>
+        <div class="card card-balance">
+          <div class="card-icon">&#128179;</div>
+          <div class="card-content">
+            <h3>剩余余额</h3>
+            <p class="card-value" id="remaining-balance">$0.00</p>
+          </div>
+        </div>
+        <div class="card card-requests">
+          <div class="card-icon">&#128200;</div>
+          <div class="card-content">
+            <h3>总请求数</h3>
+            <p class="card-value" id="total-requests">0</p>
+          </div>
+        </div>
+        <div class="card card-tokens">
+          <div class="card-icon">&#128221;</div>
+          <div class="card-content">
+            <h3>总 Token 数</h3>
+            <p class="card-value" id="total-tokens">0</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Budget Section -->
+      <section class="budget-section">
+        <div class="budget-header">
+          <h2>预算管理</h2>
+          <div class="budget-setting">
+            <label for="monthly-budget">月度预算: $</label>
+            <input type="number" id="monthly-budget" value="10" min="1" step="1">
+            <button id="save-budget" class="btn btn-secondary">保存</button>
+          </div>
+        </div>
+        <div class="budget-progress-container">
+          <div class="budget-info">
+            <span>本月消费: <strong id="month-spent">$0.00</strong></span>
+            <span id="budget-status">正常</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" id="budget-progress" style="width: 0%"></div>
+          </div>
+          <div class="budget-percent"><span id="budget-percent">0%</span> 已使用</div>
+        </div>
+      </section>
+
+      <!-- Charts Section -->
+      <section class="charts-section">
+        <div class="chart-container">
+          <h2>本月消费趋势</h2>
+          <canvas id="trend-chart"></canvas>
+        </div>
+        <div class="chart-container">
+          <h2>模型消费分布</h2>
+          <canvas id="model-chart"></canvas>
+        </div>
+      </section>
+
+      <!-- Data Table Section -->
+      <section class="table-section">
+        <div class="table-header">
+          <h2>消费明细（最近 30 天）</h2>
+          <div class="filter-group">
+            <label for="model-filter">筛选模型:</label>
+            <select id="model-filter">
+              <option value="">全部模型</option>
+            </select>
+          </div>
+        </div>
+        <div class="table-wrapper">
+          <table id="data-table">
+            <thead>
+              <tr>
+                <th>日期</th>
+                <th>模型</th>
+                <th>请求数</th>
+                <th>Token 数</th>
+                <th>消费金额</th>
+              </tr>
+            </thead>
+            <tbody id="table-body">
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <!-- Loading Overlay -->
+    <div id="loading" class="loading-overlay" style="display:none;">
+      <div class="spinner"></div>
+      <p>正在获取数据...</p>
+    </div>
+
+    <!-- Error Toast -->
+    <div id="error-toast" class="toast" style="display:none;">
+      <span id="error-message"></span>
+      <button class="toast-close" onclick="document.getElementById('error-toast').style.display='none'">&times;</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
